@@ -5,14 +5,25 @@ import { Button, TextField, Dropdown } from "@vibe/core";
 import "@vibe/core/tokens"; // Load CSS tokens
 
 function App() {
+  const preConfiguredList = [
+    {
+      name: "Create login page for the task manager",
+      priority: "low"
+    }, {
+      name: "Learn about OAuth2.0 authentication",
+      priority: "medium"
+    }, {
+      name: "Go to the GYM",
+      priority: "medium"
+    }, {
+      name: "Add a DB for the task manager",
+      priority: "high"
+    }
+  ]
+
   const [loading, setLoading] = useState(false);
-  const [tasks, setTasks] = useState([{
-    name: "Task 1",
-    priority: "high"
-  }, {
-    name: "Task 2",
-    priority: "medium"
-  }]); // Task list
+  //  ! TODO: On production, remove the preconfigured list
+  const [tasks, setTasks] = useState(preConfiguredList); // Task list
   const [taskInput, setTaskInput] = useState(""); // Task name input
   const [priority, setPriority] = useState(""); // Task priority
   const [filter, setFilter] = useState({ label: "All", value: "all" }); // Filter state
@@ -21,6 +32,17 @@ function App() {
     { label: "High", value: "high" },
     { label: "Medium", value: "medium" },
     { label: "Low", value: "low" },
+  ];
+
+  const dynamicFilterOptions = [
+    { label: "All", value: "all" },
+    ...tasks
+      .map((task) => task.priority)
+      .filter((value, index, self) => self.indexOf(value) === index)
+      .map((priority) => ({
+        label: priority.charAt(0).toUpperCase() + priority.slice(1),
+        value: priority,
+      })),
   ];
 
   const filterOptions = [
@@ -89,7 +111,7 @@ function App() {
 
         {/* Filter dropdown */}
         <Dropdown
-          options={filterOptions}
+          options={dynamicFilterOptions}
           placeholder="Filter tasks"
           value={filter}
           onChange={(value) => setFilter(value || { label: "All", value: "all" })}
