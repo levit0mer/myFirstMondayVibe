@@ -1,13 +1,15 @@
 {
   "name": "my-first-monday-vibe",
-  "description": "A simple task manager app built with Monday Vibe components.",
+  "description": "A simple Task Manager app. Built with Monday Vibe components so I can experience integrating open source in my project.",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.5.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@vibe/core": "^3.0.0",
+    "lottie-react": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",

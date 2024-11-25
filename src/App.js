@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Loading from "./components/Loading";
+import Navbar from "./components/Navbar";
 import { Button, TextField, Dropdown } from "@vibe/core";
 import "@vibe/core/tokens"; // Load CSS tokens
-import Navbar from "./components/Navbar";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [tasks, setTasks] = useState([]); // Task list
   const [taskInput, setTaskInput] = useState(""); // Task name input
   const [priority, setPriority] = useState(""); // Task priority
@@ -13,6 +15,16 @@ function App() {
     { label: "Medium", value: "medium" },
     { label: "Low", value: "low" },
   ];
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const addTask = () => {
     if (taskInput.trim() && priority) {
@@ -43,12 +55,12 @@ function App() {
 
         {/* Dropdown for task priority */}
         <Dropdown
-            options={priorityOptions}
-            placeholder="Select priority"
-            value={priority}
-            onChange={(value) => setPriority(value)} // Updates the entire object
-            style={{ marginBottom: "10px" }}
-          />
+          options={priorityOptions}
+          placeholder="Select priority"
+          value={priority}
+          onChange={(value) => setPriority(value)} // Updates the entire object
+          style={{ marginBottom: "10px" }}
+        />
 
         {/* Button to add a new task */}
         <Button onClick={addTask} style={{ marginBottom: "20px" }}>
