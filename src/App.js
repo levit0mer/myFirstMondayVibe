@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, TextField, Dropdown } from "@vibe/core";
 import "@vibe/core/tokens"; // Load CSS tokens
+import Navbar from "./components/Navbar";
 
 function App() {
   const [tasks, setTasks] = useState([]); // Task list
@@ -22,42 +23,50 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px", margin: "auto" }}>
-      <h1>Simple Task Manager</h1>
+    <>
+      <Navbar />
+      <div style={{ padding: "20px", maxWidth: "500px", margin: "auto" }}>
+        <h1>Your simple daily Task Manager</h1>
+        <ol>
+          <li>Enter a task</li>
+          <li>Choose the task priority</li>
+          <li>Click `Add Task`</li>
+        </ol>
 
-      {/* Input for task name */}
-      <TextField
-        placeholder="Enter a task name"
-        value={taskInput}
-        onChange={(value) => setTaskInput(value)}
-        style={{ marginBottom: "10px" }}
-      />
-
-      {/* Dropdown for task priority */}
-      <Dropdown
-          options={priorityOptions}
-          placeholder="Select priority"
-          value={priority}
-          onChange={(value) => setPriority(value)} // Updates the entire object
+        {/* Input for task name */}
+        <TextField
+          placeholder="Enter a task name"
+          value={taskInput}
+          onChange={(value) => setTaskInput(value)}
           style={{ marginBottom: "10px" }}
         />
 
-      {/* Button to add a new task */}
-      <Button onClick={addTask} style={{ marginBottom: "20px" }}>
-        Add Task
-      </Button>
+        {/* Dropdown for task priority */}
+        <Dropdown
+            options={priorityOptions}
+            placeholder="Select priority"
+            value={priority}
+            onChange={(value) => setPriority(value)} // Updates the entire object
+            style={{ marginBottom: "10px" }}
+          />
 
-      {/* Display the list of tasks */}
-      <h2>Tasks</h2>
-      {tasks.length === 0 && <p>No tasks added yet.</p>}
-      <ul>
-        {tasks.map((task, index) => (
-          <li key={index}>
-            {task.name} - <strong>{task.priority.label}</strong>
-          </li>
-        ))}
-      </ul>
-    </div>
+        {/* Button to add a new task */}
+        <Button onClick={addTask} style={{ marginBottom: "20px" }}>
+          Add Task
+        </Button>
+
+        {/* Display the list of tasks */}
+        <h2>Tasks</h2>
+        {tasks.length === 0 && <p>No tasks added yet.</p>}
+        <ul>
+          {tasks.map((task, index) => (
+            <li key={index}>
+              {task.name} - <strong>{task.priority.label}</strong>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
