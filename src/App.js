@@ -5,10 +5,17 @@ import { Button, TextField, Dropdown } from "@vibe/core";
 import "@vibe/core/tokens"; // Load CSS tokens
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([]); // Task list
+  const [loading, setLoading] = useState(false);
+  const [tasks, setTasks] = useState([{
+    name: "Task 1",
+    priority: "high"
+  }, {
+    name: "Task 2",
+    priority: "medium"
+  }]); // Task list
   const [taskInput, setTaskInput] = useState(""); // Task name input
   const [priority, setPriority] = useState(""); // Task priority
+  const [filter, setFilter] = useState({ label: "All", value: "all" }); // Filter state
 
   const priorityOptions = [
     { label: "High", value: "high" },
@@ -16,29 +23,42 @@ function App() {
     { label: "Low", value: "low" },
   ];
 
+  const filterOptions = [
+    { label: "All", value: "all" },
+    { label: "High", value: "high" },
+    { label: "Medium", value: "medium" },
+    { label: "Low", value: "low" },
+  ];
+
+  // Simulate loading time
   useEffect(() => {
-    // Simulate loading time
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-
+  // Add a new task
   const addTask = () => {
     if (taskInput.trim() && priority) {
-      setTasks([...tasks, { name: taskInput, priority }]);
+      setTasks([...tasks, { name: taskInput, priority: priority.value }]);
       setTaskInput(""); // Clear task name input
       setPriority(""); // Clear priority
     }
   };
 
+  // Filter tasks based on selected filter
+  const filteredTasks = tasks.filter((task) =>
+    !filter || filter.value === "all" ? true : task.priority === filter.value
+  );
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Navbar />
       <div style={{ padding: "20px", maxWidth: "500px", margin: "auto" }}>
-        <h1>Your simple daily Task Manager</h1>
+        <h1>Your Simple Task Manager</h1>
         <ol>
           <li>Enter a task</li>
           <li>Choose the task priority</li>
@@ -58,7 +78,7 @@ function App() {
           options={priorityOptions}
           placeholder="Select priority"
           value={priority}
-          onChange={(value) => setPriority(value)} // Updates the entire object
+          onChange={(value) => setPriority(value)}
           style={{ marginBottom: "10px" }}
         />
 
@@ -67,13 +87,22 @@ function App() {
           Add Task
         </Button>
 
+        {/* Filter dropdown */}
+        <Dropdown
+          options={filterOptions}
+          placeholder="Filter tasks"
+          value={filter}
+          onChange={(value) => setFilter(value || { label: "All", value: "all" })}
+          style={{ marginBottom: "20px" }}
+        />
+
         {/* Display the list of tasks */}
         <h2>Tasks</h2>
-        {tasks.length === 0 && <p>No tasks added yet.</p>}
+        {filteredTasks.length === 0 && <p>No tasks match the filter.</p>}
         <ul>
-          {tasks.map((task, index) => (
+          {filteredTasks.map((task, index) => (
             <li key={index}>
-              {task.name} - <strong>{task.priority.label}</strong>
+              {task.name} - <strong>{task.priority}</strong>
             </li>
           ))}
         </ul>
