@@ -1,5 +1,6 @@
 {
   "name": "my-first-monday-vibe",
+  "description": "A simple task manager app built with Monday Vibe components.",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
